@@ -24,7 +24,7 @@ export class Challenges {
     [key: string]: NewGoal;
 }
 
-export class Day {
+class Day {
     participant: boolean;
     supporter: boolean;
 }
