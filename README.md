@@ -8,6 +8,7 @@
 <br />
 <br />
 
+# THIS IS A TEST LINE
 ## Template for NEAR dapps
 ### Requirements
 ##### IMPORTANT: Make sure you have the latest version of NEAR Shell and Node Version > 10.x 
