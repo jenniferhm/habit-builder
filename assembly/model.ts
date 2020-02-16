@@ -21,7 +21,8 @@ export class NewGoal {
 }
 
 export class Challenges {
-    [key: string]: NewGoal;
+    [key: string]: NewGoal,
+    last_challenge_id: u64
 }
 
 class Day {

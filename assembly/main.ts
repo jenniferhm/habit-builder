@@ -17,24 +17,24 @@ export function welcome(account_id: string): TextMessage {
   return message;
 }
 
-export function setNewChallenge(user_id: string, task_description: string, challenge_id: string, challenge_start_date: string, challenge_end_date: string, support_user_id: string, user_contribution: u64, support_user_contribution: u64, day: {}, is_complete: boolean): NewGoal[] {
-  logging.log('storing challenge');
-  const NewGoal = createNewChallengeEntry(
-    user_id,
-    task_description,
-    challenge_id,
-    challenge_start_date,
-    support_user_id,
-    user_contribution,
-    support_user_contribution
-  );
+// export function setNewChallenge(user_id: string, task_description: string, challenge_id: string, challenge_start_date: string, challenge_end_date: string, support_user_id: string, user_contribution: u64, support_user_contribution: u64, day: {}, is_complete: boolean): NewGoal[] {
+//   logging.log('storing challenge');
+//   const NewGoal = createNewChallengeEntry(
+//     user_id,
+//     task_description,
+//     challenge_id,
+//     challenge_start_date,
+//     support_user_id,
+//     user_contribution,
+//     support_user_contribution
+//   );
 
-  const currentGoals: NewGoal[] = getChallenges(user_id, false);
-  currentGoals.push(NewGoal);
+//   const currentGoals: NewGoal[] = getChallenges(user_id, false);
+//   currentGoals.push(NewGoal);
 
-  storage.set<NewGoal[]>(user_id, currentGoals);
-  return currentGoals;
-}
+//   storage.set<NewGoal[]>(user_id, currentGoals);
+//   return currentGoals;
+// }
 
 export function getChallenges(user_id: string, is_complete?: boolean): NewGoal[] {
   let results = storage.get<NewGoal[]>(user_id, [])!;
@@ -57,7 +57,7 @@ function createNewChallengeEntry(user_id: string,
   support_user_id: string,
   user_contribution: u64,
   support_user_contribution: u64
-): NewGoal {
+): void {
   const goal: NewGoal = {
     user_id,
     task_description,
@@ -68,10 +68,14 @@ function createNewChallengeEntry(user_id: string,
     user_contribution,
     support_user_contribution,
     day: {},
-    is_complete: false
+    is_complete: false,
+    challenge_won: false
   }
 
-  return goal;
+  let challenges = storage.get<Challenges>('challenges') || ;
+  challenges[goal.challenge_id] = goal
+  challenges.last_challenge_id = challenges.last_challenge_id + 1 || 1;
+  storage.set('challenges', challenges);
 };
 
 
