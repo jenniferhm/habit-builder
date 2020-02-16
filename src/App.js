@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'antd/dist/antd.css'
 import NavigationBar from './components/NavigationBar';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import CreatePage from './pages/CreatePage';
 
 const FAKE = 'Joe Smith';
 
@@ -88,14 +89,15 @@ class App extends Component {
     }
     return (
       <div className="App-header">
-          <NavigationBar login={this.state.login} requestSignIn={this.requestSignIn} requestSignOut={this.requestSignOut}/>
-        <p style={style}>{this.state.speech}</p>
-
-        <Switch>
-          <Route exact to='/'>
-            <HomePage/>
-          </Route>
-        </Switch>
+        <BrowserRouter>
+          <NavigationBar login={this.state.login} requestSignIn={this.requestSignIn} requestSignOut={this.requestSignOut} />
+          <p style={style}>{this.state.speech}</p>
+          <Switch>
+            <Route exact path='/' render={() => <HomePage />} />
+            <Route exact path='/challenge' render={() => <div> hello </div>} />
+            <Route exact path='/create' render={() => <CreatePage />} />
+          </Switch>
+        </BrowserRouter>
       </div>
     )
   }

@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import useForm from '../utils/useForm';
+import React, { useState } from 'react';
 
 const useForm = () => {
   const [state, setState] = useState({});

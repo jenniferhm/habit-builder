@@ -39,12 +39,10 @@ window.nearInitPromise = initContract().then(() => {
     contract: window.contract,
     wallet: window.walletAccount,
   };
-  
+
   ReactDOM.render(
     <Context.Provider value={defaultState}>
-      <BrowserRouter>
-        <App contract={window.contract} wallet={window.walletAccount} />
-      </BrowserRouter>
+      <App contract={window.contract} wallet={window.walletAccount} />
     </Context.Provider>
     ,
     document.getElementById('root')

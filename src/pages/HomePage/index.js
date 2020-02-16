@@ -27,7 +27,7 @@ const HomePage = (props) => {
     }}>
       <h1> Current Challenges </h1>
         <div style={styles.cardContainer}>
-        {[current_challenge].map( (card, i) => (
+        {current_challenge.map( (card, i) => (
           <Transition
             key={`${i}y`}
             in={true}

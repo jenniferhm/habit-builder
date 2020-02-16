@@ -4,8 +4,20 @@
 import React from 'react';
 import { Button, Card, Icon, Avatar } from 'antd';
 
+const FailStyles = {
+  iconColor: 'red',
+  iconType: 'exclamation-circle',
+  message: 'Failed',
+};
+
+const SuccessStyles = {
+  iconColor: 'green',
+  iconType: 'check-circle',
+  message: 'Success',
+};
+
 const PastCard = (props) => {
-  console.log(props);
+  const styleObj = props.is_success ? FailStyles : SuccessStyles;
 
   return (
     <Card
@@ -18,9 +30,10 @@ const PastCard = (props) => {
       }
       actions={[
         <Icon style={{
-          color: 'green',
-        }} 
-        type="check-circle"></Icon>
+          color: styleObj.iconColor,
+        }}
+          type={styleObj.iconType}>
+        </Icon>
       ]}
     >
       <Card.Meta

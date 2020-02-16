@@ -1,15 +1,17 @@
 /**
- * Temporary card component
+ * Temporary card component for one challenge that's almost completed
+
  */
 import React from 'react';
 import { Button, Card, Icon, Avatar } from 'antd';
 
 const TempCard = (props) => {
-  console.log(props.challenge_id);
 
   return (
     <Card
-      style={{ width: 300 }}
+      style={{
+        width: 300,
+      }}
       cover={
         <img
           alt="example"
@@ -17,18 +19,16 @@ const TempCard = (props) => {
         />
       }
       actions={[
-        // <Icon type="setting" key="setting" />,
-        // <Icon type="edit" key="edit" />,
-        // <Icon type="ellipsis" key="ellipsis" />,
-        <Button> Set Challenges</Button>
+        <Button type="secondary">
+          More
+          <Icon type="right" />
+        </Button> 
       ]}
     >
       <Card.Meta
-        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
         title={props.task_description}
-        description={`${props.days_out_of_30} days left!`}
+        description={`${props.days_out_of_30} day${props.days_out_of_30 === 1 ? '' : 's'} left!`}
       />
-      {/* <Button>More Detail</Button> */}
     </Card>
   )
 }
