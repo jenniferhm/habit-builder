@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Card, Icon, Avatar, Calendar, Badge, Checkbox, Descriptions, Layout, Menu, SubMenu} from 'antd';
 import moment from "moment";
+import Context from '../../Context';
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -36,7 +37,7 @@ function getStartDate(props) {
 }
 
 const ChallengePage = (props) => {
-    console.log(props.challenge_id);
+    const { contract, wallet } = useContext(Context);
 
     return (
         <div>

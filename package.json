@@ -9,7 +9,6 @@
     "dev:deploy:contract": "near dev-deploy",
     "deploy:contract": "near deploy",
     "deploy:pages": "gh-pages -d dist/",
-    "prestart": "npm run build:contract && npm run dev:deploy:contract",
     "start": "CONTRACT_NAME=$(cat neardev/dev-account) parcel src/index.html",
     "dev": "nodemon --watch assembly -e ts --exec 'npm run start'",
     "test": "npm run build:contract && jest test --env=near-shell/test_environment --runInBand",
@@ -32,6 +31,7 @@
     "react-test-renderer": "^16.12.0"
   },
   "dependencies": {
+    "@types/moment": "^2.13.0",
     "animejs": "^3.1.0",
     "antd": "^3.26.9",
     "bootstrap": "^4.4.1",

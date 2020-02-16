@@ -27,9 +27,6 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    console.log('props available', this.props.contract);
-    const allGoals = await this.props.contract.get30DayChallenges({ person: FAKE });
-    this.setState({ goals: allGoals });
 
     let loggedIn = this.props.wallet.isSignedIn();
     if (loggedIn) {
