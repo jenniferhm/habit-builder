@@ -1,3 +1,4 @@
+
 import { logging, storage } from "near-runtime-ts";
 // available class: near, context, storage, logging, base58, base64, 
 // PersistentMap, PersistentVector, PersistentDeque, PersistentTopN, ContractPromise, math
@@ -68,3 +69,37 @@ function createNewChallengeEntry(user_id: string, task_description: string, chal
 function printString(s: string): string {
   return s;
 }
+
+export function store() {}
+
+function dateDiffInDays(challengeStart: number): number {
+  let currDate = moment();
+  let diff = currDate.diff(challengeStart, 'days');
+  return diff
+}
+
+export function markDailyChallengeComplete(challengeId: string, userId: string): void {
+  // get the challenges
+  let challenges = storage.get<object>('challenges');
+  let challengeStart = challenges[challengeId]['challenge_start_date'];
+  let challengeUserId = challenges[challengeId]['user_id'];
+
+  // if the current user is the challenge creator
+  // then mark participation for this day and write it back to the chain
+  if (userId === challengeUserId) {
+    let challengeDay = dateDiffInDays(challengeStart);
+    challenges[challengeId]['day'][challengeDay]['participant'] = true;
+    storage.set('challenges', challenges);
+  }
+}
+
+export function distributeTokens(): string {
+  let result = storage.get<object>("challenges");
+
+  if(result) {
+    return result;
+  }
+
+  return "";
+}
+
