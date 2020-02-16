@@ -2,7 +2,9 @@
 import { logging, storage } from "near-runtime-ts";
 // available class: near, context, storage, logging, base58, base64, 
 // PersistentMap, PersistentVector, PersistentDeque, PersistentTopN, ContractPromise, math
-import { TextMessage, NewGoal } from "./model";
+import { TextMessage, NewGoal, Challenges } from "./model";
+import moment from "moment";
+
 
 const NAME = ". Welcome to NEAR Protocol chain"
 let numberOfChallenges = 0;
@@ -53,8 +55,8 @@ function createNewChallengeEntry(user_id: string, task_description: string, chal
     user_id,
     task_description,
     challenge_id: `${numberOfChallenges += 1}`,
-    challege_start_date: "YYYY-MM-DD",
-    challege_end_date: "",
+    challenge_start_date: "YYYY-MM-DD",
+    challenge_end_date: "",
     support_user_id,
     user_contribution,
     support_user_contribution,
@@ -78,10 +80,10 @@ function dateDiffInDays(challengeStart: number): number {
   return diff
 }
 
-export function markDailyChallengeComplete(challengeId: string, userId: string): void {
+export function markDailyChallengeComplete(challenge_id: string, userId: string): void {
   // get the challenges
-  let challenges = storage.get<object>('challenges');
-  let challenge = challenges[challengeId];
+  let challenges = storage.get<Challenges>('challenges') || ;
+  let challenge = challenges[challenge_id];
   let challengeStart = challenge['challenge_start_date'];
   let challengeUserId = challenge['user_id'];
 
@@ -98,14 +100,14 @@ export function markDailyChallengeComplete(challengeId: string, userId: string):
 // we want to initiate a transaction between users
 // and then 
 
-export function isChallengeComplete(challengeId: string, minCompletionsToWin = 25, maxMissesToLose = 5) {
-  let challenges = storage.get<object>('challenges');
-  let challenge = challenges[challengeId];
+export function isChallengeComplete(challenge_id: string, minCompletionsToWin = 25, maxMissesToLose = 5) {
+  let challenges = storage.get<Challenges>('challenges') || {};
+  let challenge = challenges![challenge_id];
 
   let completions = 0;
-  let challengeDays = challenge['days'];
+  let challengeDays = challenge['day'];
   for (let day in challengeDays) {
-    if (day['participant']) {
+    if (challengeDays.day['participant']) {
       completions++
     }
   }
@@ -116,11 +118,11 @@ export function isChallengeComplete(challengeId: string, minCompletionsToWin = 2
   }
 }
 
-function distributeTokens(challenge: object): void {
+function distributeTokens(challenge: NewGoal): void {
   let won = challenge['challenge_won'];
   let participantId = challenge['user_id'];
   let participantDono = challenge['user_contribution'];
-  let supporterId = challenge['supporter_id'];
+  let supporterId = challenge['support_user_id'];
   let supporterDono = challenge['support_user_contribution'];
   if (won) {
     transferFunds(participantId, supporterId, supporterDono);
