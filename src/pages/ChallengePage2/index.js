@@ -5,7 +5,7 @@ import moment from "moment";
 const {Header, Footer, Sider, Content} = Layout;
 
 function dateCellRender(value) {
-    let daysInProgress = new Set([13,14,15,16]);
+    let daysInProgress = new Set([16]);
     // day is not 2020-02-16 && is previous days
     let isCheck = value._d < moment() && !daysInProgress.has(value._d.getDate());
     return (
@@ -35,7 +35,7 @@ function getStartDate(props) {
     return moment();
 }
 
-const ChallengePage = (props) => {
+const ChallengePage2 = (props) => {
     console.log(props.challenge_id);
 
     return (
@@ -56,7 +56,7 @@ const ChallengePage = (props) => {
                 </Sider>
 
                 <Layout>
-                    <Header style={{background: '#fff', padding: 0, textAlign: 'center'}}>walk my dog</Header>
+                    <Header style={{background: '#fff', padding: 0, textAlign: 'center'}}>walk my cat</Header>
                     <Content>
                         <Calendar defaultValue={getStartDate(props)} dateCellRender={dateCellRender}
                                   monthCellRender={monthCellRender}/>
@@ -70,4 +70,4 @@ const ChallengePage = (props) => {
     )
 }
 
-export default ChallengePage;
+export default ChallengePage2;
