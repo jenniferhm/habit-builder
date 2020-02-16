@@ -32562,20 +32562,31 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+const FAKE = 'Joe Smith';
+
 class App extends _react.Component {
   constructor(props) {
     super(props);
     this.state = {
       login: false,
-      speech: null
+      speech: null,
+      goals: []
     };
     this.signedInFlow = this.signedInFlow.bind(this);
     this.requestSignIn = this.requestSignIn.bind(this);
     this.requestSignOut = this.requestSignOut.bind(this);
     this.signedOutFlow = this.signedOutFlow.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    console.log('props available', this.props.contract);
+    const allGoals = await this.props.contract.get30DayChallenges({
+      person: FAKE
+    });
+    this.setState({
+      goals: allGoals
+    });
     let loggedIn = this.props.wallet.isSignedIn();
 
     if (loggedIn) {
@@ -32622,6 +32633,17 @@ class App extends _react.Component {
     this.setState({
       login: false,
       speech: null
+    });
+  }
+
+  async handleClick() {
+    console.log('hi');
+    const goals = await this.props.contract.set30DayChallenge({
+      person: 'Joe Smith',
+      name: 'exercise everyday'
+    });
+    this.setState({
+      goals
     });
   }
 
@@ -32690,7 +32712,9 @@ class App extends _react.Component {
     }, " Learn from NEAR Documentation"), " ", _react.default.createElement("span", {
       role: "img",
       "aria-label": "book"
-    }, "\uD83D\uDCDA"))));
+    }, "\uD83D\uDCDA")), _react.default.createElement("button", {
+      onClick: this.handleClick
+    }, "Add a 30 day challenge"), _react.default.createElement("p", null, " Current goals: "), this.state.goals.map(goal => _react.default.createElement("p", null, " ", goal.person, " ", goal.task, " ", goal.dateStarted, " "))));
   }
 
 }
@@ -32725,7 +32749,7 @@ function getConfig(env) {
       return {
         networkId: 'local',
         nodeUrl: 'http://localhost:3030',
-        keyPath: `${"/Users/jennifer"}/.near/validator_key.json`,
+        keyPath: `${"/Users/orlando"}/.near/validator_key.json`,
         walletUrl: 'http://localhost:4000/wallet',
         contractName: CONTRACT_NAME
       };
@@ -37405,72 +37429,7 @@ Duplex.prototype._destroy = function (err, cb) {
 
   pna.nextTick(cb, err);
 };
-},{"process-nextick-args":"../node_modules/process-nextick-args/index.js","core-util-is":"../node_modules/core-util-is/lib/util.js","inherits":"../node_modules/inherits/inherits_browser.js","./_stream_readable":"../node_modules/readable-stream/lib/_stream_readable.js","./_stream_writable":"../node_modules/readable-stream/lib/_stream_writable.js"}],"../node_modules/string_decoder/node_modules/safe-buffer/index.js":[function(require,module,exports) {
-
-/* eslint-disable node/no-deprecated-api */
-var buffer = require('buffer')
-var Buffer = buffer.Buffer
-
-// alternative to using Object.keys for old browsers
-function copyProps (src, dst) {
-  for (var key in src) {
-    dst[key] = src[key]
-  }
-}
-if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
-  module.exports = buffer
-} else {
-  // Copy properties from require('buffer')
-  copyProps(buffer, exports)
-  exports.Buffer = SafeBuffer
-}
-
-function SafeBuffer (arg, encodingOrOffset, length) {
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-// Copy static methods from Buffer
-copyProps(Buffer, SafeBuffer)
-
-SafeBuffer.from = function (arg, encodingOrOffset, length) {
-  if (typeof arg === 'number') {
-    throw new TypeError('Argument must not be a number')
-  }
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.alloc = function (size, fill, encoding) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  var buf = Buffer(size)
-  if (fill !== undefined) {
-    if (typeof encoding === 'string') {
-      buf.fill(fill, encoding)
-    } else {
-      buf.fill(fill)
-    }
-  } else {
-    buf.fill(0)
-  }
-  return buf
-}
-
-SafeBuffer.allocUnsafe = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return Buffer(size)
-}
-
-SafeBuffer.allocUnsafeSlow = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return buffer.SlowBuffer(size)
-}
-
-},{"buffer":"../node_modules/buffer/index.js"}],"../node_modules/string_decoder/lib/string_decoder.js":[function(require,module,exports) {
+},{"process-nextick-args":"../node_modules/process-nextick-args/index.js","core-util-is":"../node_modules/core-util-is/lib/util.js","inherits":"../node_modules/inherits/inherits_browser.js","./_stream_readable":"../node_modules/readable-stream/lib/_stream_readable.js","./_stream_writable":"../node_modules/readable-stream/lib/_stream_writable.js"}],"../node_modules/readable-stream/node_modules/string_decoder/lib/string_decoder.js":[function(require,module,exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -37768,7 +37727,7 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":"../node_modules/string_decoder/node_modules/safe-buffer/index.js"}],"../node_modules/readable-stream/lib/_stream_readable.js":[function(require,module,exports) {
+},{"safe-buffer":"../node_modules/readable-stream/node_modules/safe-buffer/index.js"}],"../node_modules/readable-stream/lib/_stream_readable.js":[function(require,module,exports) {
 
 var global = arguments[3];
 var process = require("process");
@@ -38791,7 +38750,7 @@ function indexOf(xs, x) {
   }
   return -1;
 }
-},{"process-nextick-args":"../node_modules/process-nextick-args/index.js","isarray":"../node_modules/isarray/index.js","events":"../node_modules/events/events.js","./internal/streams/stream":"../node_modules/readable-stream/lib/internal/streams/stream-browser.js","safe-buffer":"../node_modules/readable-stream/node_modules/safe-buffer/index.js","core-util-is":"../node_modules/core-util-is/lib/util.js","inherits":"../node_modules/inherits/inherits_browser.js","util":"../node_modules/parcel-bundler/src/builtins/_empty.js","./internal/streams/BufferList":"../node_modules/readable-stream/lib/internal/streams/BufferList.js","./internal/streams/destroy":"../node_modules/readable-stream/lib/internal/streams/destroy.js","./_stream_duplex":"../node_modules/readable-stream/lib/_stream_duplex.js","string_decoder/":"../node_modules/string_decoder/lib/string_decoder.js","process":"../node_modules/process/browser.js"}],"../node_modules/readable-stream/lib/_stream_transform.js":[function(require,module,exports) {
+},{"process-nextick-args":"../node_modules/process-nextick-args/index.js","isarray":"../node_modules/isarray/index.js","events":"../node_modules/events/events.js","./internal/streams/stream":"../node_modules/readable-stream/lib/internal/streams/stream-browser.js","safe-buffer":"../node_modules/readable-stream/node_modules/safe-buffer/index.js","core-util-is":"../node_modules/core-util-is/lib/util.js","inherits":"../node_modules/inherits/inherits_browser.js","util":"../node_modules/parcel-bundler/src/builtins/_empty.js","./internal/streams/BufferList":"../node_modules/readable-stream/lib/internal/streams/BufferList.js","./internal/streams/destroy":"../node_modules/readable-stream/lib/internal/streams/destroy.js","./_stream_duplex":"../node_modules/readable-stream/lib/_stream_duplex.js","string_decoder/":"../node_modules/readable-stream/node_modules/string_decoder/lib/string_decoder.js","process":"../node_modules/process/browser.js"}],"../node_modules/readable-stream/lib/_stream_transform.js":[function(require,module,exports) {
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -41596,7 +41555,7 @@ var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 module.exports = basex(ALPHABET)
 
-},{"base-x":"../node_modules/base-x/src/index.js"}],"../node_modules/bn.js/lib/bn.js":[function(require,module,exports) {
+},{"base-x":"../node_modules/base-x/src/index.js"}],"../node_modules/nearlib/node_modules/bn.js/lib/bn.js":[function(require,module,exports) {
 var Buffer = require("buffer").Buffer;
 (function (module, exports) {
   'use strict';
@@ -46103,7 +46062,7 @@ function deserialize(schema, classType, buffer) {
 }
 exports.deserialize = deserialize;
 
-},{"bs58":"../node_modules/bs58/index.js","bn.js":"../node_modules/bn.js/lib/bn.js","text-encoding-utf-8":"../node_modules/text-encoding-utf-8/lib/encoding.lib.js","buffer":"../node_modules/buffer/index.js"}],"../node_modules/mustache/mustache.js":[function(require,module,exports) {
+},{"bs58":"../node_modules/bs58/index.js","bn.js":"../node_modules/nearlib/node_modules/bn.js/lib/bn.js","text-encoding-utf-8":"../node_modules/text-encoding-utf-8/lib/encoding.lib.js","buffer":"../node_modules/buffer/index.js"}],"../node_modules/mustache/mustache.js":[function(require,module,exports) {
 var define;
 var global = arguments[3];
 // This file has been generated from mustache.mjs
@@ -47841,7 +47800,7 @@ const json_rpc_provider_1 = require("./json-rpc-provider");
 exports.JsonRpcProvider = json_rpc_provider_1.JsonRpcProvider;
 exports.TypedError = json_rpc_provider_1.TypedError;
 
-},{"./provider":"../node_modules/nearlib/lib/providers/provider.js","./json-rpc-provider":"../node_modules/nearlib/lib/providers/json-rpc-provider.js"}],"../node_modules/tweetnacl/nacl-fast.js":[function(require,module,exports) {
+},{"./provider":"../node_modules/nearlib/lib/providers/provider.js","./json-rpc-provider":"../node_modules/nearlib/lib/providers/json-rpc-provider.js"}],"../node_modules/nearlib/node_modules/tweetnacl/nacl-fast.js":[function(require,module,exports) {
 (function(nacl) {
 'use strict';
 
@@ -50381,7 +50340,7 @@ class KeyPairEd25519 extends KeyPair {
 }
 exports.KeyPairEd25519 = KeyPairEd25519;
 
-},{"tweetnacl":"../node_modules/tweetnacl/nacl-fast.js","./serialize":"../node_modules/nearlib/lib/utils/serialize.js","./enums":"../node_modules/nearlib/lib/utils/enums.js"}],"../node_modules/nearlib/lib/utils/network.js":[function(require,module,exports) {
+},{"tweetnacl":"../node_modules/nearlib/node_modules/tweetnacl/nacl-fast.js","./serialize":"../node_modules/nearlib/lib/utils/serialize.js","./enums":"../node_modules/nearlib/lib/utils/enums.js"}],"../node_modules/nearlib/lib/utils/network.js":[function(require,module,exports) {
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 
@@ -50463,7 +50422,7 @@ function formatWithCommas(value) {
     return value;
 }
 
-},{"bn.js":"../node_modules/bn.js/lib/bn.js"}],"../node_modules/nearlib/lib/utils/index.js":[function(require,module,exports) {
+},{"bn.js":"../node_modules/nearlib/node_modules/bn.js/lib/bn.js"}],"../node_modules/nearlib/lib/utils/index.js":[function(require,module,exports) {
 "use strict";
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
@@ -52649,7 +52608,7 @@ function validateBNLike(argMap) {
     }
 }
 
-},{"bn.js":"../node_modules/bn.js/lib/bn.js","./providers":"../node_modules/nearlib/lib/providers/index.js","./utils/errors":"../node_modules/nearlib/lib/utils/errors.js"}],"../node_modules/nearlib/lib/near.js":[function(require,module,exports) {
+},{"bn.js":"../node_modules/nearlib/node_modules/bn.js/lib/bn.js","./providers":"../node_modules/nearlib/lib/providers/index.js","./utils/errors":"../node_modules/nearlib/lib/utils/errors.js"}],"../node_modules/nearlib/lib/near.js":[function(require,module,exports) {
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -52741,7 +52700,7 @@ async function connect(config) {
 }
 exports.connect = connect;
 
-},{"bn.js":"../node_modules/bn.js/lib/bn.js","./account":"../node_modules/nearlib/lib/account.js","./connection":"../node_modules/nearlib/lib/connection.js","./contract":"../node_modules/nearlib/lib/contract.js","./key_stores/unencrypted_file_system_keystore":"../node_modules/nearlib/lib/key_stores/unencrypted_file_system_keystore.js","./account_creator":"../node_modules/nearlib/lib/account_creator.js","./key_stores":"../node_modules/nearlib/lib/key_stores/index.js"}],"../node_modules/nearlib/lib/wallet-account.js":[function(require,module,exports) {
+},{"bn.js":"../node_modules/nearlib/node_modules/bn.js/lib/bn.js","./account":"../node_modules/nearlib/lib/account.js","./connection":"../node_modules/nearlib/lib/connection.js","./contract":"../node_modules/nearlib/lib/contract.js","./key_stores/unencrypted_file_system_keystore":"../node_modules/nearlib/lib/key_stores/unencrypted_file_system_keystore.js","./account_creator":"../node_modules/nearlib/lib/account_creator.js","./key_stores":"../node_modules/nearlib/lib/key_stores/index.js"}],"../node_modules/nearlib/lib/wallet-account.js":[function(require,module,exports) {
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
@@ -52913,9 +52872,9 @@ async function initContract() {
   let acct = await new nearlib.Account(window.near.connection, window.accountId);
   window.contract = await new nearlib.Contract(acct, window.nearConfig.contractName, {
     // View methods are read only. They don't modify the state, but usually return some value.
-    viewMethods: ['welcome'],
+    viewMethods: ['welcome', 'get30DayChallenges'],
     // Change methods can modify the state. But you don't receive the returned value when called.
-    changeMethods: [],
+    changeMethods: ['set30DayChallenge'],
     // Sender is the account ID to initialize transactions.
     sender: window.accountId
   });
@@ -52955,7 +52914,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60868" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58541" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
