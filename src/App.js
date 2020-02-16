@@ -96,12 +96,6 @@ class App extends Component {
             <HomePage/>
           </Route>
         </Switch>
-
-        <button onClick={this.handleClick}>Add a 30 day challenge</button>
-        <p> Current goals: </p>
-        {this.state.goals.map((goal) =>
-          <p> {goal.person} {goal.task} {goal.dateStarted} </p>
-        )}
       </div>
     )
   }
