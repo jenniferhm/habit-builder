@@ -27,7 +27,7 @@ export function setNewChallenge(user_id: string, task_description: string, chall
     support_user_id,
     user_contribution,
     support_user_contribution
-    );
+  );
 
   const currentGoals: NewGoal[] = getChallenges(user_id, false);
   currentGoals.push(NewGoal);
@@ -50,7 +50,14 @@ export function getCurrentChallengesForUser(user: string): NewGoal[] {
   return results;
 }
 
-function createNewChallengeEntry(user_id: string, task_description: string, challenge_id: string, challenge_start_date: string, support_user_id: string, user_contribution: u64, support_user_contribution: u64): NewGoal {
+function createNewChallengeEntry(user_id: string,
+  task_description: string,
+  challenge_id: string,
+  challenge_start_date: string,
+  support_user_id: string,
+  user_contribution: u64,
+  support_user_contribution: u64
+): NewGoal {
   const goal: NewGoal = {
     user_id,
     task_description,
@@ -72,7 +79,7 @@ function printString(s: string): string {
   return s;
 }
 
-export function store() {}
+export function store() { }
 
 function dateDiffInDays(challengeStart: number): number {
   let currDate = moment();
