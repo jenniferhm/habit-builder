@@ -14,8 +14,8 @@ async function initContract() {
 
   // Initializing our contract APIs by contract name and configuration.
   window.contract = await near.loadContract(nearConfig.contractName, {
-    viewMethods: ["getResponse"],     // <-- find this line and change it to match
-    changeMethods: ["setResponse"],   // <-- find this line and change it to match
+    viewMethods: ["getResponse", 'welcome', 'getChallenges', 'getCurrentChallengesForUser'],     // <-- find this line and change it to match
+    changeMethods: ["setResponse", 'setNewChallenge', 'markDailyChallengeComplete', 'isChallengeComplete', 'createNewChallengeEntry'],   // <-- find this line and change it to match
     sender: window.accountId
   });
 }

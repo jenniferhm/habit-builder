@@ -26,12 +26,12 @@ const HomePage = (props) => {
   useEffect(() => {
     const getChallenges = async () => {
       try {
-
-        const currentChallenges = await contract.getChallenges({ user_id: userId, is_complete: true});
+        contract.welcome();
+        const currentChallenges = await contract.getCurrentChallengesForUser({ user: userId });  
         setCurrChallenges(currentChallenges); 
       } catch (err) {
         console.error(err);
-        console.error(contract, 'contract', contract.getChallenges);
+        console.error(contract, 'contract', contract.getCurrentChallengesForUser);
       }
     };
 
