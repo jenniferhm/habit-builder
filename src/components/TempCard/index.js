@@ -19,7 +19,8 @@ const TempCard = (props) => {
         />
       }
       actions={[
-        <Button type="secondary">
+        // subtract 5
+        <Button href={`/challenge${props.challenge_id - 5}`} type="secondary">
           More
           <Icon type="right" />
         </Button> 

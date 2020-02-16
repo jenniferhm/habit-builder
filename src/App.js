@@ -6,6 +6,8 @@ import NavigationBar from './components/NavigationBar';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CreatePage from './pages/CreatePage';
+import ChallengePage from "./pages/ChallengePage";
+import ChallengePage2 from "./pages/ChallengePage2";
 
 const FAKE = 'Joe Smith';
 
@@ -94,8 +96,13 @@ class App extends Component {
           <p style={style}>{this.state.speech}</p>
           <Switch>
             <Route exact path='/' render={() => <HomePage />} />
-            <Route exact path='/challenge' render={() => <div> hello </div>} />
+            <Route exact path='/challenge1'>
+              <ChallengePage />
+              </Route>
             <Route exact path='/create' render={() => <CreatePage />} />
+            <Route exact path='/challenge2'>
+              <ChallengePage2 />
+            </Route>
           </Switch>
         </BrowserRouter>
       </div>
