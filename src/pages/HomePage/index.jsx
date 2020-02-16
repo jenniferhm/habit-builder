@@ -1,14 +1,3 @@
-import 'regenerator-runtime/runtime';
-import React, { Component } from 'react';
-import logo from './assets/logo.svg';
-import nearlogo from './assets/gray_near_logo.svg';
-import near from './assets/near.svg';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import SmallCard from './components/SmallCard';
-import NavigationBar from './components/NavigationBar';
-
-const FAKE = 'Joe Smith';
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -26,8 +15,8 @@ class App extends Component {
 
   async componentDidMount() {
     console.log('props available', this.props.contract);
-    const allGoals = await this.props.contract.get30DayChallenges({ person: FAKE });
-    this.setState({ goals: allGoals });
+    const allGoals = await this.props.contract.get30DayChallenges({ person: FAKE});
+    this.setState({ goals: allGoals});
 
     let loggedIn = this.props.wallet.isSignedIn();
     if (loggedIn) {
@@ -38,7 +27,6 @@ class App extends Component {
   }
 
   async signedInFlow() {
-    console.log("come in sign in flow")
     this.setState({
       login: true,
     })
@@ -46,9 +34,7 @@ class App extends Component {
     if (window.location.search.includes("account_id")) {
       window.location.replace(window.location.origin + window.location.pathname)
     }
-    const response = await this.props.contract.welcome({ account_id: accountId })
-
-    this.setState({ speech: response.text });
+    this.props.contract.welcome({ account_id: accountId }).then(response => this.setState({speech: response.text}))
   }
 
   async requestSignIn() {
@@ -77,8 +63,8 @@ class App extends Component {
 
   async handleClick() {
     console.log('hi');
-    const goals = await this.props.contract.set30DayChallenge({ person: 'Joe Smith', name: 'exercise everyday' });
-    this.setState({ goals });
+    const goals = await this.props.contract.set30DayChallenge({ person: 'Joe Smith', name: 'exercise everyday'});
+    this.setState({goals});
   };
 
   render() {
@@ -89,13 +75,19 @@ class App extends Component {
     }
     return (
       <div className="App-header">
-          <NavigationBar login={this.state.login} requestSignIn={this.requestSignIn} requestSignOut={this.requestSignOut}/>
         <p style={style}>{this.state.speech}</p>
-        <button onClick={this.handleClick}>Add a 30 day challenge</button>
-        <p> Current goals: </p>
-        {this.state.goals.map((goal) =>
-          <p> {goal.person} {goal.task} {goal.dateStarted} </p>
-        )}
+        <div>
+          {this.state.login ? <button onClick={this.requestSignOut}>Log out</button>
+            : <button onClick={this.requestSignIn}>Log in with NEAR</button>}
+        </div>
+        <div>
+
+          {/* <button onClick={this.handleClick}>Add a 30 day challenge</button>
+          <p> Current goals: </p>
+          {this.state.goals.map((goal) => 
+           <p> {goal.person} {goal.task} {goal.dateStarted} </p>  
+          )} */}
+        </div>
       </div>
     )
   }
