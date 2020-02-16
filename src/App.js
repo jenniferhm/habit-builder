@@ -1,11 +1,9 @@
 import 'regenerator-runtime/runtime';
 import React, { Component } from 'react';
-import logo from './assets/logo.svg';
-import nearlogo from './assets/gray_near_logo.svg';
-import near from './assets/near.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SmallCard from './components/SmallCard';
 import NavigationBar from './components/NavigationBar';
+import { Switch, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
 
 const FAKE = 'Joe Smith';
 
@@ -91,6 +89,13 @@ class App extends Component {
       <div className="App-header">
           <NavigationBar login={this.state.login} requestSignIn={this.requestSignIn} requestSignOut={this.requestSignOut}/>
         <p style={style}>{this.state.speech}</p>
+
+        <Switch>
+          <Route exact to='/'>
+            <div> hi</div>
+          </Route>
+        </Switch>
+
         <button onClick={this.handleClick}>Add a 30 day challenge</button>
         <p> Current goals: </p>
         {this.state.goals.map((goal) =>
