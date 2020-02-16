@@ -1,6 +1,7 @@
 {
   "name": "habit-builder",
   "version": "0.1.0",
+  "homepage": "https://jenniferhm.github.io/habit-builder",
   "scripts": {
     "build": "npm run build:contract && npm run build:web",
     "build:contract": "mkdir -p out/ && gulp",
@@ -8,11 +9,12 @@
     "dev:deploy:contract": "near dev-deploy",
     "deploy:contract": "near deploy",
     "deploy:pages": "gh-pages -d dist/",
-    "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
     "prestart": "npm run build:contract && npm run dev:deploy:contract",
     "start": "CONTRACT_NAME=$(cat neardev/dev-account) parcel src/index.html",
     "dev": "nodemon --watch assembly -e ts --exec 'npm run start'",
-    "test": "npm run build:contract && jest test --env=near-shell/test_environment --runInBand"
+    "test": "npm run build:contract && jest test --env=near-shell/test_environment --runInBand",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.8.4",
