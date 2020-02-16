@@ -5,20 +5,28 @@ import nearlogo from './assets/gray_near_logo.svg';
 import near from './assets/near.svg';
 import './App.css';
 
+const FAKE = 'Joe Smith';
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       login: false,
-      speech: null
+      speech: null,
+      goals: [],
     }
     this.signedInFlow = this.signedInFlow.bind(this);
     this.requestSignIn = this.requestSignIn.bind(this);
     this.requestSignOut = this.requestSignOut.bind(this);
     this.signedOutFlow = this.signedOutFlow.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    console.log('props available', this.props.contract);
+    const allGoals = await this.props.contract.get30DayChallenges({ person: FAKE});
+    this.setState({ goals: allGoals});
+
     let loggedIn = this.props.wallet.isSignedIn();
     if (loggedIn) {
       this.signedInFlow();
@@ -63,6 +71,12 @@ class App extends Component {
     })
   }
 
+  async handleClick() {
+    console.log('hi');
+    const goals = await this.props.contract.set30DayChallenge({ person: 'Joe Smith', name: 'exercise everyday'});
+    this.setState({goals});
+  };
+
   render() {
     let style = {
       fontSize: "1.5rem",
@@ -101,6 +115,12 @@ class App extends Component {
           </p>
           <p><span role="img" aria-label="book">📚</span><a className="App-link" href="https://docs.nearprotocol.com"> Learn from NEAR Documentation</a> <span role="img" aria-label="book">📚</span>
           </p>
+
+          <button onClick={this.handleClick}>Add a 30 day challenge</button>
+          <p> Current goals: </p>
+          {this.state.goals.map((goal) => 
+           <p> {goal.person} {goal.task} {goal.dateStarted} </p>  
+          )}
         </div>
       </div>
     )
