@@ -52,16 +52,17 @@ export function getCurrentChallengesForUser(user: string): NewGoal[] {
 
 function createNewChallengeEntry(user_id: string,
   task_description: string,
-  challenge_id: string,
   challenge_start_date: string,
   support_user_id: string,
   user_contribution: u64,
   support_user_contribution: u64
 ): void {
+
+  let challenges = storage.get<Challenges>('challenges') || ;
   const goal: NewGoal = {
     user_id,
     task_description,
-    challenge_id: `${numberOfChallenges += 1}`,
+    challenge_id: `${challenges.last_challenge_id || 1}`,
     challenge_start_date: "YYYY-MM-DD",
     challenge_end_date: "",
     support_user_id,
@@ -72,7 +73,6 @@ function createNewChallengeEntry(user_id: string,
     challenge_won: false
   }
 
-  let challenges = storage.get<Challenges>('challenges') || ;
   challenges[goal.challenge_id] = goal
   challenges.last_challenge_id = challenges.last_challenge_id + 1 || 1;
   storage.set('challenges', challenges);
