@@ -1,6 +1,7 @@
 import 'regenerator-runtime/runtime';
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'antd/dist/antd.css'
 import NavigationBar from './components/NavigationBar';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
@@ -92,7 +93,7 @@ class App extends Component {
 
         <Switch>
           <Route exact to='/'>
-            <div> hi</div>
+            <HomePage/>
           </Route>
         </Switch>
 
