@@ -5,6 +5,8 @@ import 'antd/dist/antd.css'
 import NavigationBar from './components/NavigationBar';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import ChallengePage from "./pages/ChallengePage";
+import ChallengePage2 from "./pages/ChallengePage2";
 
 const FAKE = 'Joe Smith';
 
@@ -92,8 +94,14 @@ class App extends Component {
         <p style={style}>{this.state.speech}</p>
 
         <Switch>
-          <Route exact to='/'>
+          <Route exact path='/'>
             <HomePage/>
+          </Route>
+          <Route exact path='/challenge'>
+            <ChallengePage/>
+          </Route>
+          <Route exact path='/challenge2'>
+            <ChallengePage2/>
           </Route>
         </Switch>
       </div>
