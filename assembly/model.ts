@@ -5,10 +5,14 @@ export class TextMessage {
 }
 
 export class NewGoal {
-    userId: string;
-    challengeId: number;
-    task: string;
-    dateStarted: string;
-    amountPledged: number;
-    isComplete: bool;
+    challenge_id: string;
+    challege_start_date: string;
+    challege_end_date: string;
+    user_id: string;
+    support_user_id: string;
+    user_contribution: u64;
+    support_user_contribution: u64;
+    task_description: string;
+    day: {};
+    is_complete: boolean;
 }

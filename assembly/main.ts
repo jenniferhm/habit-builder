@@ -2,7 +2,6 @@ import { logging, storage } from "near-runtime-ts";
 // available class: near, context, storage, logging, base58, base64, 
 // PersistentMap, PersistentVector, PersistentDeque, PersistentTopN, ContractPromise, math
 import { TextMessage, NewGoal } from "./model";
-import moment = require("moment");
 
 const NAME = ". Welcome to NEAR Protocol chain"
 let numberOfChallenges = 0;
@@ -15,48 +14,51 @@ export function welcome(account_id: string): TextMessage {
   return message;
 }
 
-export function setNewChallenge(user: string, task: string, amountPledged: number, isComplete: bool): NewGoal[] {
+export function setNewChallenge(user_id: string, task_description: string, challenge_id: string, challenge_start_date: string, challenge_end_date: string, support_user_id: string, user_contribution: u64, support_user_contribution: u64, day: {}, is_complete: boolean): NewGoal[] {
   logging.log('storing challenge');
-  const NewGoal = createNewChallengeEntry(user, task, amountPledged, isComplete);
+  const NewGoal = createNewChallengeEntry(
+    user_id,
+    task_description,
+    challenge_id,
+    challenge_start_date,
+    support_user_id,
+    user_contribution,
+    support_user_contribution
+    );
 
-  const currentGoals: NewGoal[] = getChallenges(user);
+  const currentGoals: NewGoal[] = getChallenges(user_id, false);
   currentGoals.push(NewGoal);
 
-  storage.set<NewGoal[]>(user, currentGoals);
+  storage.set<NewGoal[]>(user_id, currentGoals);
   return currentGoals;
 }
 
-export function getChallenges(user: string, isComplete?: bool): NewGoal[] {
-  let results = storage.get<NewGoal[]>(user, [])!;
+export function getChallenges(user_id: string, is_complete?: boolean): NewGoal[] {
+  let results = storage.get<NewGoal[]>(user_id, [])!;
 
-  if (isComplete === false) {
-    results.filter((obj: {}, idx: number) => obj[idx].isComplete === false);
+  if (is_complete === false) {
+    results.filter((obj: {}, idx) => results[idx].is_complete === false);
   }
   return results;
 }
 
-export function getCurrentChallengesForUser(user: string) {
+export function getCurrentChallengesForUser(user: string): NewGoal[] {
   const results = getChallenges(user, false);
   return results;
 }
 
-// function isChallengeComplete(challengeId: number, currentNumberOfDays: number) {
-//   const markedDays = storage.get<currentChallenge>;
-//   if (currentNumberOfDays - markedDays < 5 && currentNumberOfDays < 30) {
-//     return false;
-//   } else {
-//     if (currentNumberOfDays)
-//   }
-// }
-
-function createNewChallengeEntry(user: string, task: string, amountPledged: number, isComplete: bool): NewGoal {
+function createNewChallengeEntry(user_id: string, task_description: string, challenge_id: string, challenge_start_date: string, support_user_id: string, user_contribution: u64, support_user_contribution: u64): NewGoal {
   const goal: NewGoal = {
-    userId: user,
-    challengeId: numberOfChallenges += 1,
-    task,
-    dateStarted: 'YYYYMMDD',
-    amountPledged,
-    isComplete
+    user_id,
+    task_description,
+    challenge_id: `${numberOfChallenges += 1}`,
+    challege_start_date: "YYYY-MM-DD",
+    challege_end_date: "",
+    support_user_id,
+    user_contribution,
+    support_user_contribution,
+    day: {},
+    is_complete: false
   }
 
   return goal;
